@@ -1,0 +1,100 @@
+﻿
+@page "/shoppingCart"
+@using SalesTaxApp.Builder
+@using SalesTaxApp.Db
+@using SalesTaxApp.Models
+@using SalesTaxApp.Services
+@inject IShopStoreDB ShopStoreDB;
+@inject IShoppingTripCalculator ShoppingTripCalculator;
+@inject IProductFactory ProductFactory;
+
+<PageTitle>Sales Tax Problem</PageTitle>
+<RadzenText TextStyle="TextStyle.H3" TagName="TagName.H3" Class="rz-color-primary">Products</RadzenText>
+
+<div>
+    @if (ShopStoreDB.ListOfProducts != null)
+    {
+         <RadzenCard>
+            <RadzenDataList WrapItems="true" AllowPaging="true" Data="@ShopStoreDB.ListOfProducts" TItem="StoreProduct" PageSize="5" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true">
+                    <Template Context="product">
+                        <RadzenCard Style="width: 100%; padding: 0; overflow: hidden;">
+                            <div class="container">
+                                <div class="row" style="margin-left: calc(var(--bs-gutter-x) * -1); margin-right: calc(var(--bs-gutter-x) * -1)">
+                                    <div class="col-lg-3 p-3 product-title">
+                                            <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" Class="rz-color-secondary">@(product.Name)</RadzenText>
+                                    </div>
+                                    <div class="col-lg-7 p-3">
+                                        <div class="row d-flex">
+                                            <div class="col-md-6 col-lg-2">
+                                                <RadzenText TextStyle="TextStyle.H6" TagName="TagName.H5" class="mb-0">Price</RadzenText>
+                                                <RadzenText TextStyle="TextStyle.Body2" class="mb-sm-2 mb-lg-0">@(product.Price)</RadzenText>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2 p-3">
+                                        <RadzenButton  Text="Add"  Click="() => AddToCart(product)" Class="w-100" />
+                                    </div>
+                                </div>
+                            </div>
+                        </RadzenCard>
+                    </Template>
+                </RadzenDataList>
+
+            </RadzenCard>
+        <br>
+    }
+</div>
+
+
+@if (_currentShoppingTrip != null)
+{
+    <h2>My shopping cart</h2>
+    <RadzenButton Text="Clear cart" Click="ClearCart" Class="w-100" />
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Price</th>
+                <th>Price with Tax</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in _currentShoppingTrip.Products)
+            {
+                <tr>
+                    <td>@product.Name</td>
+                    <td>@product.GetBasePrice()</td>
+                    <td>@product.GetPriceWithTax()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+    <p>Total taxes : @_currentShoppingTrip.TotalTaxesAmount</p>
+    <p>Total amount : @_currentShoppingTrip.TotalAmount</p>
+}
+
+
+@code {
+    ShoppingTrip? _currentShoppingTrip;
+    List<IProduct> _productsInCart = new List<IProduct>();
+
+
+    #region Shopping Trip Cart Methods
+ 
+    void AddToCart(StoreProduct product)
+    {
+        var cartProduct = ProductFactory.CreateProduct(product);
+        _productsInCart.Add(cartProduct);
+        _currentShoppingTrip = ShoppingTripCalculator.BuildShoppingTrip(_productsInCart);
+    }
+    void ClearCart()
+
+    {
+        _productsInCart = new List<IProduct>();
+        _currentShoppingTrip = null;
+    }
+    #endregion
+}

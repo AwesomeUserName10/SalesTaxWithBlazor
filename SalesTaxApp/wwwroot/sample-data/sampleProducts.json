@@ -1,0 +1,63 @@
+[
+  {
+    "name": "Book",
+    "price": "12.49",
+    "isImported": "false",
+    "hasBaseTax": "false"
+  },
+  {
+    "name": "Music CD",
+    "price": "14.99",
+    "isImported": "false",
+    "hasBaseTax": true
+  },
+
+  {
+    "name": "Chocolate Bar",
+    "price": "0.85",
+    "isImported": "false",
+    "hasBaseTax": "false"
+  },
+  {
+    "name": "Chocolate Bar",
+    "price": "0.85",
+    "isImported": "false",
+    "hasBaseTax": "false"
+  },
+  {
+    "name": "Imported box of chocolates",
+    "price": "10.00",
+    "isImported": true,
+    "hasBaseTax": "false"
+  },
+  {
+    "name": "Imported bottle of perfume Channel",
+    "price": "47.50",
+    "isImported": true,
+    "hasBaseTax": true
+  },
+  {
+    "name": "Imported bottle of perfume Cheaper",
+    "price": "27.99",
+    "isImported": true,
+    "hasBaseTax": true
+  },
+  {
+    "name": "Bottle of perfume",
+    "price": "18.99",
+    "isImported": "false",
+    "hasBaseTax": true
+  },
+  {
+    "name": "Packet of paracetamol",
+    "price": "9.75",
+    "isImported": "false",
+    "hasBaseTax": "false"
+  },
+  {
+    "name": "Box of imported chocolates",
+    "price": "9.75",
+    "isImported": true,
+    "hasBaseTax": "false"
+  }
+]
